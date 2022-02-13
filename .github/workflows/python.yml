@@ -8,7 +8,7 @@ on:
 
 jobs:
   python_ci:
-
+    environment: Production
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
