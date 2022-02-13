@@ -3,7 +3,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.models.entities.Item import Item
 from sqlalchemy.future import select
 from sqlalchemy import update, delete
-from sqlalchemy.exc import NoResultFound
+from sqlalchemy.exc import NoResultFound, IntegrityError
 from app.models.requests.ItemRequest import AddItemRequest, UpdateItemRequest
 
 
@@ -26,9 +26,15 @@ class ItemRepository:
 
     async def add(self, request: AddItemRequest) -> Item:
         entity = Item(id=request.id, name=request.name, description=request.description)
-        self.session.add(entity)
-        await self.session.flush()
-        return entity
+
+        try:
+            self.session.add(entity)
+            await self.session.flush()
+        except IntegrityError as err:
+            await self.session.rollback()
+            raise err
+        else:
+            return entity
 
     async def update(self, id: int, request: UpdateItemRequest):
         query = (

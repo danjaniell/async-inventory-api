@@ -5,6 +5,8 @@ from app.main import app
 from app.models.entities.Item import Item
 from app.data.repositories.ItemRepository import ItemRepository, ItemNotFoundError
 from app.models.requests.ItemRequest import AddItemRequest, UpdateItemRequest
+from sqlalchemy.exc import IntegrityError
+from asyncpg.exceptions import UniqueViolationError
 
 
 @pytest.fixture
@@ -85,11 +87,21 @@ def test_add(client):
 
 def test_add_409(client):
     repository_mock = mock.Mock(spec=ItemRepository)
-    repository_mock.update.side_effect = ItemNotFoundError(1)
+    repository_mock.add.side_effect = IntegrityError(
+        "INSERT INTO items (id, name, description) VALUES (%s, %s, %s)",
+        (1, "Bath Towel", "Red"),
+        IntegrityError(
+            None,
+            None,
+            UniqueViolationError(
+                "duplicate key value violates unique constraint 'items_pkey'\nDETAIL:  Key (id)=(1) already exists.'"
+            ),
+        ),
+    )
 
     request = AddItemRequest(id=1, name="Bath Towel", description="Red")
     with app.container.item_repository.override(repository_mock):
-        response = client.put("/items/add", request.json())
+        response = client.post("/items/add", request.json())
 
     assert response.status_code == 409
 
