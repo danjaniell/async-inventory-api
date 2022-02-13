@@ -3,15 +3,11 @@ from typing import AsyncIterator
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.ext.declarative import as_declarative, declared_attr
 from sqlalchemy.orm import sessionmaker, scoped_session
+from sqlalchemy.ext.declarative import declarative_base
 
 logger = logging.getLogger(__name__)
 
-
-@as_declarative()
-class Base:
-    @declared_attr
-    def __tablename__(cls) -> str:
-        return cls.__name__.lower()
+Base = declarative_base()
 
 
 class Database:

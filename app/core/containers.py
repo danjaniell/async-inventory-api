@@ -12,14 +12,16 @@ class Container(containers.DeclarativeContainer):
         ]
     )
 
-    db = providers.Singleton(Database, db_url=settings.DATABASE_URI)
+    db: providers.Singleton[Database] = providers.Singleton(
+        Database, db_url=settings.DATABASE_URI
+    )
 
-    item_repository = providers.Factory(
+    item_repository: providers.Factory[ItemRepository] = providers.Factory(
         ItemRepository,
         session=providers.Resource(db.provided.session()),
     )
 
-    item_service = providers.Factory(
+    item_service: providers.Factory[ItemService] = providers.Factory(
         ItemService,
         item_repository=item_repository,
     )
