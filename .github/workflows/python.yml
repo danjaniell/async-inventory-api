@@ -57,7 +57,7 @@ jobs:
         name: ${{ matrix.os }}, python ${{ matrix.python-version }}
 
     - name: Check types with mypy
-      run: mypy src
+      run: mypy app
 
     - name: Install pypa/build
       run: python -m pip install build
