@@ -6,3 +6,5 @@ asyncpg==0.25.0
 dependency_injector==4.38.0
 Jinja2==3.0.3
 pydantic[dotenv]
+pytest-cov
+mypy
