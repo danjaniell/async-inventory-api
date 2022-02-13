@@ -35,6 +35,14 @@ jobs:
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=120 --statistics
 
     - name: Test with pytest
+      env:
+        PROJECT_NAME: ${{ secrets.PROJECT_NAME }}
+        BACKEND_CORS_ORIGINS: ${{ secrets.BACKEND_CORS_ORIGINS }}
+        PORT: ${{ secrets.PORT }}
+        POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+        POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+        POSTGRES_SERVER: ${{ secrets.POSTGRES_SERVER }}
+        POSTGRES_DB: ${{ secrets.POSTGRES_DB }}        
       run: |
         pytest --cov --cov-report=xml
 
