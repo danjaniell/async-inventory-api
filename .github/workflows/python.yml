@@ -49,13 +49,12 @@ jobs:
     - name: Upload coverage to Codecov
       env:
         CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-      if: ${{ env.CODECOV_TOKEN }}
+      #if: ${{ env.CODECOV_TOKEN }}
       uses: codecov/codecov-action@v2
       with:
-        token: ${{ secrets.CODECOV_TOKEN }}
+        #token: ${{ secrets.CODECOV_TOKEN }}
         files: coverage.xml
         fail_ci_if_error: true
-        path_to_write_report: ./coverage/codecov_report.txt
         name: ${{ matrix.os }}, python ${{ matrix.python-version }}
         verbose: true
 
