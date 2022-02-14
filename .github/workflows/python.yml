@@ -50,11 +50,14 @@ jobs:
       env:
         CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
       if: ${{ env.CODECOV_TOKEN }}
-      uses: codecov/codecov-action@v1
+      uses: codecov/codecov-action@v2
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
-        file: coverage.xml
+        files: coverage.xml
+        fail_ci_if_error: true
+        path_to_write_report: ./coverage/codecov_report.txt
         name: ${{ matrix.os }}, python ${{ matrix.python-version }}
+        verbose: true
 
     - name: Check types with mypy
       run: mypy app
