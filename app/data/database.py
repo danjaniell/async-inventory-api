@@ -1,7 +1,6 @@
 import logging
 from typing import AsyncIterator
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
-from sqlalchemy.ext.declarative import as_declarative, declared_attr
 from sqlalchemy.orm import sessionmaker, scoped_session
 from sqlalchemy.ext.declarative import declarative_base
 
